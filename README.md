@@ -1,6 +1,12 @@
 # Godot 3rd Person Controller
-Third person controller template for godot engine.
+This is an updated version of Khairul169's original 3rd Person controller for the Godot Engine. The updates to the project aim to address the following issues:
 
-##Please note that you will need the latest git-compiled-from-source version of godot engine.
+* Godot 3.0 Support
+* Code documentation to outline the behaviors and functions of various mechanisms of the camera system.
+* A proper collision map model to the PlayerMale scene (one that resembles a FPS game, like Counter-Strike)
+
+Completed binaries of the project for Windows, macOS, Linux, and HTML5 can be downloaded here.
+
+You can view the original project [here](https://github.com/khairul169/3rdperson-godot).
 
 ![Preview image](https://raw.githubusercontent.com/khairul169/3rdperson-godot/master/preview.png)
