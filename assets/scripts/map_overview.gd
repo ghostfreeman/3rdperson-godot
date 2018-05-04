@@ -16,8 +16,8 @@ func _process(delta):
 	var vp = get_node("vp");
 	var cam = get_node("vp/cam");
 	
-	cam.set_pos(player_pos*SCALE);
-	cam.set_rot(player_rot);
+	cam.set_position(player_pos*SCALE);
+	cam.set_rotation(player_rot);
 	
 	for i in object_list:
 		var vc = get_node(str("vp/object_", i.get_name()));
@@ -25,8 +25,8 @@ func _process(delta):
 			object_list.erase(i);
 			continue;
 		
-		vc.set_pos(Vector2(i.get_global_transform().origin.x, i.get_global_transform().origin.z)*SCALE);
-		vc.set_rot(i.get_rotation().y);
+		vc.set_position(Vector2(i.get_global_transform().origin.x, i.get_global_transform().origin.z)*SCALE);
+		vc.set_rotation(i.get_rotation().y);
 	
 	var render = vp.get_render_target_texture();
 	get_node("overview").set_texture(render);
@@ -43,8 +43,8 @@ func add_object(obj, mark = false):
 		inst = obj_viewcone.instance();
 	
 	inst.set_name(str("object_", obj.get_name()));
-	inst.set_pos(Vector2(obj.get_global_transform().origin.x, obj.get_global_transform().origin.z)*SCALE);
-	inst.set_rot(obj.get_rotation().y);
+	inst.set_position(Vector2(obj.get_global_transform().origin.x, obj.get_global_transform().origin.z)*SCALE);
+	inst.set_rotation(obj.get_rotation().y);
 	
 	get_node("vp").add_child(inst);
 

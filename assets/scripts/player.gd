@@ -38,11 +38,11 @@ func _ready():
 	cam.cam_smooth_movement = true;
 
 	set_process(true);
-	set_fixed_process(true);
+	set_physics_process(true);
 	set_process_input(true);
 
 func _input(ie):
-	'''
+	"""
 	The General input handler for the player Object.
 
 	Inside this method (TODO)
@@ -53,8 +53,8 @@ func _input(ie):
 
 	Refer to each if statement inside for a full description of the key events
 	that will be acted out when thrown.
-	'''
-	if ie.type == InputEvent.MOUSE_BUTTON:
+	"""
+	if ie is InputEventMouseButton:
 		if ie.pressed && ie.button_index == BUTTON_RIGHT && g_Time > focus_switchtime:
 			focus_mode = !focus_mode;
 			focus_switchtime = g_Time + 0.2;
@@ -69,7 +69,7 @@ func _input(ie):
 				cam.cam_pitch_minmax = Vector2(80, -60);
 				cam.cam_view_sensitivity = view_sensitivity;
 
-	if ie.type == InputEvent.KEY:
+	if ie is InputEventKey:
 		if ie.pressed && Input.is_key_pressed(KEY_F1):
 			OS.set_window_fullscreen(!OS.is_window_fullscreen());
 
@@ -83,7 +83,7 @@ func _process(delta):
 	overview_map.player_pos = Vector2(get_global_transform().origin.x, get_global_transform().origin.z);
 	overview_map.player_rot = deg2rad(cam.cam_cyaw);
 
-func _fixed_process(delta):
+func _physics_process(delta):
 	check_movement(delta);
 	player_on_fixedprocess(delta);
 
@@ -161,7 +161,7 @@ func check_movement(delta):
 	velocity.z = hvel.z;
 
 	var motion = velocity*delta;
-	motion = move(motion);
+	motion = move_and_collide(motion);
 
 	on_floor = ray.is_colliding();
 
@@ -179,7 +179,7 @@ func check_movement(delta):
 			velocity=n.slide(velocity);
 
 			if original_vel.dot(velocity) > 0:
-				motion=move(motion);
+				motion=move_and_collide(motion);
 				if motion.length() < 0.001:
 					break;
 
@@ -228,7 +228,8 @@ func player_on_fixedprocess(delta):
 
 func set_anim(name, speed = 1.0):
 	var animplayer = get_node("body/char/AnimationPlayer");
-	animplayer.set_speed(speed);
+	animplayer.set_speed_scale(speed);
 	var current = animplayer.get_current_animation();
 	if current != name:
 		animplayer.play(name);
+

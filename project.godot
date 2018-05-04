@@ -1,0 +1,22 @@
+[application]
+
+config/icon = "icon.png"
+config/name = "Third Person Controller"
+run/main_scene = "res://assets/scenes/main.scn"
+
+[display]
+
+window/size/height = 600
+window/size/width = 800
+
+[importer_defaults]
+
+texture = {
+"flags/filter": true,
+"flags/mipmaps": true
+}
+
+[rasterizer]
+
+shadow_filter = 0
+

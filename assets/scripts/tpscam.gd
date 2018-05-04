@@ -30,13 +30,13 @@ func set_enabled(enabled):
 	if enabled:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED);
 		set_process(true);
-		set_fixed_process(true);
+		set_physics_process(true);
 		set_process_input(true);
 		is_enabled = true;
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
 		set_process(false);
-		set_fixed_process(false);
+		set_physics_process(false);
 		set_process_input(false);
 		is_enabled = false;
 
@@ -47,7 +47,7 @@ func add_collision_exception(node):
 	collision_exception.push_back(node);
 
 func _input(ie):
-	'''
+	"""
 	The General input handler for the tpscam Object.
 
 	Inside this method (TODO)
@@ -58,11 +58,11 @@ func _input(ie):
 
 	Refer to each if statement inside for a full description of the key events
 	that will be acted out when thrown.
-	'''
+	"""
 	if !is_enabled:
 		return;
 
-	if ie.type == InputEvent.MOUSE_MOTION:
+	if ie is InputEventMouseMotion:
 		cam_pitch = max(min(cam_pitch+(ie.relative_y*cam_view_sensitivity),cam_pitch_minmax.x),cam_pitch_minmax.y);
 		if cam_smooth_movement:
 			cam_yaw = cam_yaw-(ie.relative_x*cam_view_sensitivity);
@@ -71,7 +71,7 @@ func _input(ie):
 			cam_currentradius = cam_radius;
 			cam_update();
 
-	if ie.type == InputEvent.MOUSE_BUTTON:
+	if ie is InputEventMouseButton:
 		if ie.pressed:
 			if ie.button_index == BUTTON_WHEEL_UP:
 				cam_radius = max(min(cam_radius-0.2,4.0),1.0);
@@ -96,9 +96,9 @@ func _process(delta):
 	cam_update();
 
 func cam_update():
-	'''
+	"""
 
-	'''
+	"""
 	cam_pos = pivot.get_global_transform().origin;
 
 	if cam_smooth_movement:
@@ -120,12 +120,13 @@ func cam_update():
 	else:
 		pos = cam_pos;
 
-	cam.look_at_from_pos(pos, pivot.get_global_transform().origin, Vector3(0,1,0));
+	cam.look_at_from_position(pos, pivot.get_global_transform().origin, Vector3(0,1,0));
 
-func _fixed_process(delta):
+func _physics_process(delta):
 	if !is_enabled:
 		return;
 
 	var ds = get_world().get_direct_space_state();
 	if ds != null:
 		cam_ray_result = ds.intersect_ray(pivot.get_global_transform().origin, cam_pos, collision_exception);
+
