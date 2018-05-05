@@ -94,6 +94,8 @@ func check_movement(delta):
 	var ray = get_node("ray");
 	var aim = get_node("body").get_global_transform().basis;
 
+	# Directly affects the gravitational pull that the player is affected by
+	# during gameplay.
 	var g = gravity*gravity_factor;
 
 	if on_floor:
@@ -163,12 +165,15 @@ func check_movement(delta):
 	var motion = velocity*delta;
 	motion = move_and_collide(motion);
 
-	on_floor = ray.is_colliding();
+	print("Value of Motion");
+	print(motion);
+
+	on_floor = ray.is_colliding(); # TODO error "Invalid get index 'type' on base InputEventMouseMotion thrown here
 
 	var original_vel = velocity;
 	var attempts=4;
 
-	if motion.length() > 0:
+	if motion.length() > 0: #TODO length() function doesn't exist here, find replacement
 		while is_colliding() && attempts:
 			var n = get_collision_normal();
 

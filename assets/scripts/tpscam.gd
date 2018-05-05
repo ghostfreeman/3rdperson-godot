@@ -63,11 +63,14 @@ func _input(ie):
 		return;
 
 	if ie is InputEventMouseMotion:
-		cam_pitch = max(min(cam_pitch+(ie.relative_y*cam_view_sensitivity),cam_pitch_minmax.x),cam_pitch_minmax.y);
+		cam_pitch = max(min(cam_pitch+(ie.relative.y * cam_view_sensitivity), cam_pitch_minmax.x), cam_pitch_minmax.y);
+		#cam_pitch = max(min(cam_pitch+(ie.relative_y*cam_view_sensitivity),cam_pitch_minmax.x),cam_pitch_minmax.y);
 		if cam_smooth_movement:
-			cam_yaw = cam_yaw-(ie.relative_x*cam_view_sensitivity);
+			cam_yaw = cam_yaw-(ie.relative.x * cam_view_sensitivity);
+			#cam_yaw = cam_yaw-(ie.relative_x*cam_view_sensitivity);
 		else:
-			cam_yaw = fmod(cam_yaw-(ie.relative_x*cam_view_sensitivity),360);
+			cam_yaw = fmod(cam_yaw - (ie.relative.y * cam_view_sensitivity), 360);
+			#cam_yaw = fmod(cam_yaw-(ie.relative_x*cam_view_sensitivity),360);
 			cam_currentradius = cam_radius;
 			cam_update();
 
