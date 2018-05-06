@@ -28,8 +28,10 @@ func _process(delta):
 		vc.set_position(Vector2(i.get_global_transform().origin.x, i.get_global_transform().origin.z)*SCALE);
 		vc.set_rotation(i.get_rotation().y);
 	
-	var render = vp.get_render_target_texture();
-	get_node("overview").set_texture(render);
+	# below code doesn't work due to Godot 3 changes, commented out
+	# TODO address at some point
+	# var render = vp.get_render_target_texture(); #TODO invalid call nonexistant function 'get_render_target_texture' in base 'Viewport'
+	# get_node("overview").set_texture(render);
 
 func add_object(obj, mark = false):
 	if obj == null || is_available(obj) != null:

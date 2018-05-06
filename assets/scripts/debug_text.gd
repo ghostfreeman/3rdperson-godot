@@ -10,7 +10,7 @@ func _process(delta):
 		update += delta;
 	else:
 		update = 0.0;
-		var txt = str("FPS: ", int(OS.get_frames_per_second()), "/s");
+		var txt = str("FPS: ", int(Engine.get_frames_per_second()), "/s"); #TODO invald call get_frames_per_second
 		txt += str("\nDrawn Vertices: ", Performance.get_monitor(Performance.RENDER_VERTICES_IN_FRAME));
 		txt += str("\nDrawn Objects: ", Performance.get_monitor(Performance.RENDER_OBJECTS_IN_FRAME));
 		txt += str("\nDraw Calls: ", Performance.get_monitor(Performance.RENDER_DRAW_CALLS_IN_FRAME));

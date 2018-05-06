@@ -55,7 +55,8 @@ func _input(ie):
 	that will be acted out when thrown.
 	"""
 	if ie is InputEventMouseButton:
-		if ie.pressed && ie.button_index == BUTTON_RIGHT && g_Time > focus_switchtime:
+	#if ie is InputEventMouseButton:
+		if ie.pressed && ie.button_index == BUTTON_RIGHT && g_Time > focus_switchtime: #TODO invalid get index pressed (on base: InputEventMouseMotion)
 			focus_mode = !focus_mode;
 			focus_switchtime = g_Time + 0.2;
 
@@ -173,7 +174,7 @@ func check_movement(delta):
 	var original_vel = velocity;
 	var attempts=4;
 
-	if motion.length() > 0: #TODO length() function doesn't exist here, find replacement
+	if motion != null: #TODO length() function doesn't exist here, find replacement
 		while is_colliding() && attempts:
 			var n = get_collision_normal();
 
