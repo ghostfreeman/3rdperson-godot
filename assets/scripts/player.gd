@@ -41,7 +41,7 @@ func _ready():
 	set_physics_process(true);
 	set_process_input(true);
 
-func _input(ie):
+func _input(event):
 	"""
 	The General input handler for the player Object.
 
@@ -54,9 +54,9 @@ func _input(ie):
 	Refer to each if statement inside for a full description of the key events
 	that will be acted out when thrown.
 	"""
-	if ie is InputEventMouseButton:
+	if event is InputEventMouseButton:
 	#if ie is InputEventMouseButton:
-		if ie.pressed && ie.button_index == BUTTON_RIGHT && g_Time > focus_switchtime: #TODO invalid get index pressed (on base: InputEventMouseMotion)
+		if event.pressed && event.button_index == BUTTON_RIGHT && g_Time > focus_switchtime: #TODO invalid get index pressed (on base: InputEventMouseMotion)
 			focus_mode = !focus_mode;
 			focus_switchtime = g_Time + 0.2;
 
@@ -70,11 +70,11 @@ func _input(ie):
 				cam.cam_pitch_minmax = Vector2(80, -60);
 				cam.cam_view_sensitivity = view_sensitivity;
 
-	if ie is InputEventKey:
-		if ie.pressed && Input.is_key_pressed(KEY_F1):
+	if event is InputEventKey:
+		if event.pressed && Input.is_key_pressed(KEY_F1):
 			OS.set_window_fullscreen(!OS.is_window_fullscreen());
 
-		if ie.pressed && Input.is_key_pressed(KEY_ESCAPE):
+		if event.pressed && Input.is_key_pressed(KEY_ESCAPE):
 			get_tree().call_deferred("quit");
 
 func _process(delta):
@@ -166,16 +166,13 @@ func check_movement(delta):
 	var motion = velocity*delta;
 	motion = move_and_collide(motion);
 
-	print("Value of Motion");
-	print(motion);
-
-	on_floor = ray.is_colliding(); # TODO error "Invalid get index 'type' on base InputEventMouseMotion thrown here
+	on_floor = ray.is_colliding(); # TODO It's the same as below, this is_colliding needs to be replaced.
 
 	var original_vel = velocity;
 	var attempts=4;
 
-	if motion != null: #TODO length() function doesn't exist here, find replacement
-		while is_colliding() && attempts:
+	if motion != null: #TODO length() function doesn't exist here, find replacement (not null check working for now)
+		while is_colliding() && attempts: #TODO Invalid Call nonexistent function is_colliding in base 'KinematicBody'
 			var n = get_collision_normal();
 
 			if (rad2deg(acos(n.dot(Vector3(0,1,0))))< MAX_SLOPE_ANGLE):

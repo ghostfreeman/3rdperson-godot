@@ -46,7 +46,7 @@ func clear_exception():
 func add_collision_exception(node):
 	collision_exception.push_back(node);
 
-func _input(ie):
+func _input(event):
 	"""
 	The General input handler for the tpscam Object.
 
@@ -59,26 +59,27 @@ func _input(ie):
 	Refer to each if statement inside for a full description of the key events
 	that will be acted out when thrown.
 	"""
+	#pass
 	if !is_enabled:
 		return;
 
-	if ie is InputEventMouseMotion:
-		cam_pitch = max(min(cam_pitch+(ie.relative.y * cam_view_sensitivity), cam_pitch_minmax.x), cam_pitch_minmax.y);
-		#cam_pitch = max(min(cam_pitch+(ie.relative_y*cam_view_sensitivity),cam_pitch_minmax.x),cam_pitch_minmax.y);
+	if event is InputEventMouseMotion:
+		cam_pitch = max(min(cam_pitch+(event.relative.y * cam_view_sensitivity), cam_pitch_minmax.x), cam_pitch_minmax.y);
+		#cam_pitch = max(min(cam_pitch+(event.relative_y*cam_view_sensitivity),cam_pitch_minmax.x),cam_pitch_minmax.y);
 		if cam_smooth_movement:
-			cam_yaw = cam_yaw-(ie.relative.x * cam_view_sensitivity);
-			#cam_yaw = cam_yaw-(ie.relative_x*cam_view_sensitivity);
+			cam_yaw = cam_yaw-(event.relative.x * cam_view_sensitivity);
+			#cam_yaw = cam_yaw-(event.relative_x*cam_view_sensitivity);
 		else:
-			cam_yaw = fmod(cam_yaw - (ie.relative.y * cam_view_sensitivity), 360);
-			#cam_yaw = fmod(cam_yaw-(ie.relative_x*cam_view_sensitivity),360);
+			cam_yaw = fmod(cam_yaw - (event.relative.y * cam_view_sensitivity), 360);
+			#cam_yaw = fmod(cam_yaw-(event.relative_x*cam_view_sensitivity),360);
 			cam_currentradius = cam_radius;
 			cam_update();
 
-	if ie is InputEventMouseButton:
-		if ie.pressed:
-			if ie.button_index == BUTTON_WHEEL_UP:
+	if event is InputEventMouseButton:
+		if event.pressed:
+			if event.button_index == BUTTON_WHEEL_UP:
 				cam_radius = max(min(cam_radius-0.2,4.0),1.0);
-			elif ie.button_index == BUTTON_WHEEL_DOWN:
+			elif event.button_index == BUTTON_WHEEL_DOWN:
 				cam_radius = max(min(cam_radius+0.2,4.0),1.0);
 
 func _process(delta):
@@ -132,4 +133,3 @@ func _physics_process(delta):
 	var ds = get_world().get_direct_space_state();
 	if ds != null:
 		cam_ray_result = ds.intersect_ray(pivot.get_global_transform().origin, cam_pos, collision_exception);
-

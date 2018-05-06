@@ -1,22 +1,30 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=3
+
 [application]
 
-config/icon = "icon.png"
-config/name = "Third Person Controller"
-run/main_scene = "res://assets/scenes/main.scn"
+config/name="Third Person Controller"
+run/main_scene="res://assets/scenes/main.scn"
+config/icon="icon.png"
 
 [display]
 
-window/size/height = 600
-window/size/width = 800
+window/size/width=800
 
 [importer_defaults]
 
-texture = {
+texture={
 "flags/filter": true,
 "flags/mipmaps": true
 }
 
 [rasterizer]
 
-shadow_filter = 0
-
+shadow_filter=0
