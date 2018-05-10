@@ -85,10 +85,67 @@ func _process(delta):
 	overview_map.player_rot = deg2rad(cam.cam_cyaw);
 
 func _physics_process(delta):
-	check_movement(delta);
+	check_movement_old(delta);
 	player_on_fixedprocess(delta);
 
 func check_movement(delta):
+	"""
+	Rewrite of check_movement to leverage the use of the new collision actors
+	for collision objects
+	"""
+	var ray = get_node("ray")
+	var aim = get_node("body").get_global_transform().basis
+	
+	var g = gravity * gravity_factor;
+	
+	if is_on_floor():
+		g = 0
+		if !is_moving:
+			velocity.y = 0
+		if velocity.length() < 0.01:
+			velocity = Vector3()
+			
+	is_moving = false
+	var direction = Vector3()
+	
+	if Input.is_key_pressed(KEY_W):
+		is_moving = true;
+		direction -= aim[2];
+
+		if Input.is_key_pressed(KEY_A) && focus_mode:
+			direction -= aim[0];
+		if Input.is_key_pressed(KEY_D) && focus_mode:
+			direction += aim[0];
+	elif Input.is_key_pressed(KEY_S):
+		is_moving = true;
+
+		if focus_mode:
+			direction += aim[2];
+		else:
+			direction -= aim[2];
+
+		if Input.is_key_pressed(KEY_A) && focus_mode:
+			direction -= aim[0];
+		if Input.is_key_pressed(KEY_D) && focus_mode:
+			direction += aim[0];
+	elif Input.is_key_pressed(KEY_A):
+		is_moving = true;
+
+		if focus_mode:
+			direction -= aim[0];
+		else:
+			direction -= aim[2];
+	elif Input.is_key_pressed(KEY_D):
+		is_moving = true;
+
+		if focus_mode:
+			direction += aim[0];
+		else:
+			direction -= aim[2];
+		
+			
+
+func check_movement_old(delta):
 	"""
 	Checks the player's movement. (TODO)
 	"""
@@ -172,7 +229,7 @@ func check_movement(delta):
 	var attempts=4;
 
 	if motion != null: #TODO length() function doesn't exist here, find replacement (not null check working for now)
-		while is_colliding() && attempts: #TODO Invalid Call nonexistent function is_colliding in base 'KinematicBody'
+		while is_on_floor() && attempts: #TODO Invalid Call nonexistent function is_colliding in base 'KinematicBody'
 			var n = get_collision_normal();
 
 			if (rad2deg(acos(n.dot(Vector3(0,1,0))))< MAX_SLOPE_ANGLE):
