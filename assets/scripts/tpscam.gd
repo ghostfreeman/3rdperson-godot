@@ -63,6 +63,7 @@ func _input(event):
 	if !is_enabled:
 		return;
 
+	# Behavior for any time the mouse is swung on the X or Y axes.
 	if event is InputEventMouseMotion:
 		cam_pitch = max(min(cam_pitch+(event.relative.y * cam_view_sensitivity), cam_pitch_minmax.x), cam_pitch_minmax.y);
 		#cam_pitch = max(min(cam_pitch+(event.relative_y*cam_view_sensitivity),cam_pitch_minmax.x),cam_pitch_minmax.y);
@@ -75,6 +76,10 @@ func _input(event):
 			cam_currentradius = cam_radius;
 			cam_update();
 
+	# Behavior for Mouse Wheel events. If the mouse wheel is scrolled in,
+	# The zoom of the camera will zoom into the player object, and zoom
+	# out when the mouse wheel is rolled down. The zooming mechanism
+	# is controlled by adjusting the cam_radius field in this class
 	if event is InputEventMouseButton:
 		if event.pressed:
 			if event.button_index == BUTTON_WHEEL_UP:
@@ -83,6 +88,9 @@ func _input(event):
 				cam_radius = max(min(cam_radius+0.2,4.0),1.0);
 
 func _process(delta):
+	"""
+	TOOD write something about _process
+	"""
 	if !is_enabled:
 		return;
 
@@ -101,7 +109,7 @@ func _process(delta):
 
 func cam_update():
 	"""
-
+	TODO write something about cam_update
 	"""
 	cam_pos = pivot.get_global_transform().origin;
 
@@ -127,6 +135,10 @@ func cam_update():
 	cam.look_at_from_position(pos, pivot.get_global_transform().origin, Vector3(0,1,0));
 
 func _physics_process(delta):
+	"""
+	TODO write something about this new important event and how
+	it suddenly has as much priority as _process
+	"""
 	if !is_enabled:
 		return;
 

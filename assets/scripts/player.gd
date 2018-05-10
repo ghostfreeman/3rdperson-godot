@@ -55,8 +55,7 @@ func _input(event):
 	that will be acted out when thrown.
 	"""
 	if event is InputEventMouseButton:
-	#if ie is InputEventMouseButton:
-		if event.pressed && event.button_index == BUTTON_RIGHT && g_Time > focus_switchtime: #TODO invalid get index pressed (on base: InputEventMouseMotion)
+		if event.pressed && event.button_index == BUTTON_RIGHT && g_Time > focus_switchtime:
 			focus_mode = !focus_mode;
 			focus_switchtime = g_Time + 0.2;
 
@@ -70,6 +69,9 @@ func _input(event):
 				cam.cam_pitch_minmax = Vector2(80, -60);
 				cam.cam_view_sensitivity = view_sensitivity;
 
+	# Captures keypresses for non-game events.
+	# TODO describe in detail when you aren't lazy and aren't fighting with
+	# the animation FSM
 	if event is InputEventKey:
 		if event.pressed && Input.is_key_pressed(KEY_F1):
 			OS.set_window_fullscreen(!OS.is_window_fullscreen());
@@ -108,6 +110,7 @@ func check_movement(delta):
 	is_moving = false
 	var direction = Vector3()
 	
+	#Begin Keypress Processing 
 	if Input.is_key_pressed(KEY_W):
 		is_moving = true;
 		direction -= aim[2];
@@ -250,6 +253,8 @@ func check_movement_old(delta):
 		on_floor = false;
 
 func player_on_fixedprocess(delta):
+	
+	# Shift Key handles run speed (when pressed, double up walk speed)
 	if Input.is_key_pressed(KEY_SHIFT) && is_moving && !focus_mode:
 		move_speed = max(min(move_speed+(4*delta),walk_speed*2.0),walk_speed);
 	else:
