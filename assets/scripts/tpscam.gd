@@ -63,16 +63,15 @@ func _input(event):
 	if !is_enabled:
 		return;
 
-	# Behavior for any time the mouse is swung on the X or Y axes.
+	# Behavior for any time the mouse is swung on the X or Y axes. As the mouse is
+	# moved on these axes, the pitch/yaw is incremented/decremented linearlly to
+	# match mouse movement.
 	if event is InputEventMouseMotion:
 		cam_pitch = max(min(cam_pitch+(event.relative.y * cam_view_sensitivity), cam_pitch_minmax.x), cam_pitch_minmax.y);
-		#cam_pitch = max(min(cam_pitch+(event.relative_y*cam_view_sensitivity),cam_pitch_minmax.x),cam_pitch_minmax.y);
 		if cam_smooth_movement:
 			cam_yaw = cam_yaw-(event.relative.x * cam_view_sensitivity);
-			#cam_yaw = cam_yaw-(event.relative_x*cam_view_sensitivity);
 		else:
 			cam_yaw = fmod(cam_yaw - (event.relative.y * cam_view_sensitivity), 360);
-			#cam_yaw = fmod(cam_yaw-(event.relative_x*cam_view_sensitivity),360);
 			cam_currentradius = cam_radius;
 			cam_update();
 
